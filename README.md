@@ -1,2 +1,1 @@
-# React-weather-app
-simple react weather app
+react weather app
