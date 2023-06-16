@@ -32,7 +32,7 @@ const searchLocation = (event) => {
  <div className='location'> 
 <p>{data.name}</p></div>
 <div className='temp'>
-  <h1> {data.main?.temp}</h1>
+  <h1>{Math.round((data.main?.temp)-271)} °C </h1>
   </div>
 <div className='description'>
   <p>{data.weather?.[0]?.description}</p>
@@ -41,15 +41,15 @@ const searchLocation = (event) => {
 <div className="bottom">
   <div className='feels'> 
   <p>Feels like</p>
-    <p className='bold'>{data.main?.temp} </p>
+    <p className='bold'>{Math.round((data.main?.temp)-271)} °C</p>
   </div>
   <div className='humid'>
   <p>Humidity </p>
-    <p className='bold'>{data.main?.humidity} </p>
+    <p className='bold'>{data.main?.humidity} % </p>
   </div>
   <div className='wind'>
   <p>Wind speed</p>
-      <p className='bold'> {data.wind?.speed}</p>
+      <p className='bold'> {Math.round((data.wind?.speed)*1.609)}  Km/h</p>
   </div>
 </div>   
 </div>
