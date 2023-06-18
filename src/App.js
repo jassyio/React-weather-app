@@ -1,29 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import Axios from 'axios';
 
 function App() {
-  const [location, setLocation] = useState('Nairobi');
+  const [location, setLocation] = useState('');
   const [data, setData] = useState({});
+  const defaultLocation = 'Nairobi';
   const apiKey = 'e433fde7be9e5bd4105836a6101b6f90';
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`;
+  const fetchWeatherForDefaultLocation = useCallback(() => {
+    const locationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${defaultLocation}&appid=${apiKey}`;
+    fetchWeather(locationUrl);
+  }, [defaultLocation, apiKey]);
 
-  const searchLocation = (event) => {
-    if (event.key === 'Enter') {
-      Axios.get(url)
-        .then((response) => {
-          setData(response.data);
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      setLocation('');
-    }
-  };
-
-  useEffect(() => {
+  const fetchWeather = (url) => {
     Axios.get(url)
       .then((response) => {
         setData(response.data);
@@ -32,8 +22,37 @@ function App() {
       .catch((error) => {
         console.log(error);
       });
-  }, [url]); // Empty dependency array to fetch data only once on component mount
+  };
 
+  const searchLocation = (event) => {
+    if (event.key === 'Enter') {
+      const locationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`;
+      fetchWeather(locationUrl);
+      setLocation('');
+    }
+  };
+
+  useEffect(() => {
+    const getCurrentLocationWeather = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            const locationUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
+            fetchWeather(locationUrl);
+          },
+          (error) => {
+            console.log(error);
+            fetchWeatherForDefaultLocation();
+          }
+        );
+      } else {
+        fetchWeatherForDefaultLocation();
+      }
+    };
+
+    getCurrentLocationWeather();
+  }, [fetchWeatherForDefaultLocation]);
   return (
     <div className="App">
       <div className="search">
