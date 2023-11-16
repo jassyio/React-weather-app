@@ -84,7 +84,7 @@ h1 {
 .description{
 position: relative;
 text-align: right;
-margin-top: 20%;
+margin-top: 10%;
 padding: 2rem;
 transform: rotate(270deg);
 }
@@ -102,3 +102,31 @@ transform: rotate(270deg);
 .bold {
   font-weight: 700;
 }
+.modal-overlay {
+  position: fixed; /* Fix the modal in the viewport */
+  top: 50%;
+  left: 30%;
+  width: 70%;
+  height: 20%;
+  max-width: 550px;
+  border-radius: 8px;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  background-color: rgba(224, 28, 28, 0.5); /* Semi-transparent black background */
+  z-index: 9999; /* Ensure the modal is on top of other elements */
+}
+
+/* Styling the modal itself */
+.modal-content {
+  position: relative;
+  width: 100%; /* Set a specific width */
+  max-width: 500px; /* Set a maximum width */
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 0 10px rgba(143, 101, 101, 0.3); /* Add a shadow */
+  padding: 20px; /* Add some padding */
+  background-color: rgb(12, 189, 65); /* Set background color */
+  color: #df1818; /* Set text color */
+}
+
