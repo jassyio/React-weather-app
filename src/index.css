@@ -31,12 +31,16 @@ h1 {
   background-color: rgba(10, 10, 10, 0.4);
   color: rgb(229, 233, 233);
   overflow: hidden; /* Prevent content from overflowing */
+  align-items: center;
+  
 }
 
-.App .search {
-  text-align: center;
+/* .App .search {
+  align-items: center;
   padding: 1rem;
-}
+  
+} */
+
 
 .App input {
   padding: .7rem 1.5rem;
@@ -60,7 +64,8 @@ h1 {
   height: 100%;
   top: 0;
   left: 0;
-  z-index: -1;
+  z-index: -1
+
 }
 
 .App .container {
@@ -68,10 +73,11 @@ h1 {
   height: 500px;
   margin: auto;
   position: relative;
-  top: 10%;
+  top: 4%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  
 }
 
 .App .top {
@@ -93,10 +99,11 @@ transform: rotate(270deg);
   justify-content: space-evenly;
   text-align: center;
   width: 100%;
-  margin: 1rem auto;
-  padding: 1rem; 
+  margin: 0.5rem auto;
+  padding: 0.5rem; 
   border-radius: 12px;
   background-color: rgba(128, 124, 124, 0.493);
+  margin-bottom: 200px;
 }
 
 .bold {
@@ -129,4 +136,51 @@ transform: rotate(270deg);
   background-color: rgb(12, 189, 65); /* Set background color */
   color: #df1818; /* Set text color */
 }
+.settings{
+margin-left: 50px;
+background: transparent; 
+}
+.search {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
 
+}
+
+.search-bar {
+  flex: 1; /* Take up remaining space */
+    position: relative;
+ 
+}
+.search-bar input {
+  padding-left: 0px; /* Adjust left padding to accommodate the icon */
+}
+
+
+.settings img {
+  cursor: pointer;
+  width: 30px; /* Adjust width and height as needed */
+  height: 30px;
+  filter: brightness(0) invert(1);
+
+}
+.search img{
+    width: 24px; /* Adjust width and height as needed */
+  height: 27px;
+  cursor: pointer;
+  padding-top: 0px;
+  margin-left: 0rem;
+  filter: brightness(2) invert(1); 
+  position: relative; /* Set position to absolute */
+  top: 1.3rem; /* Align vertically */
+  left: 3rem; /* Adjust left position as needed */
+  transform: translateY(-50%); 
+  
+}
+.dashboard{
+  display:inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+
+}

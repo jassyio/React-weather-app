@@ -8,10 +8,9 @@ Modal.setAppElement('#root'); // Set the root element for accessibility
 function App() {
   const [location, setLocation] = useState('');
   const [data, setData] = useState({});
-  const [showModal, setShowModal] = useState(false);
   const defaultLocation = 'Nairobi';
   const apiKey = 'e433fde7be9e5bd4105836a6101b6f90';
-  
+
   const fetchWeatherForDefaultLocation = useCallback(() => {
     const locationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${defaultLocation}&appid=${apiKey}`;
     fetchWeather(locationUrl);
@@ -22,22 +21,12 @@ function App() {
       .then((response) => {
         setData(response.data);
         console.log(response.data);
+        // You can call your notification function here if needed
       })
       .catch((error) => {
         console.log(error);
+        // Display error message to the user
       });
-  };
-
-  const requestNotificationPermission = () => {
-    if (Notification.permission !== 'granted') {
-      Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-          new Notification('Weather App', {
-            body: 'You will now receive weather updates!',
-          });
-        }
-      });
-    }
   };
 
   const searchLocation = (event) => {
@@ -68,44 +57,53 @@ function App() {
     };
 
     getCurrentLocationWeather();
-    requestNotificationPermission(); // Request notification permission on load
   }, [fetchWeatherForDefaultLocation]);
-
-  const openModal = () => {
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
-  const [showAd, setShowAd] = useState(false);
-
-  useEffect(() => {
-    // Show the advertisement after 5 seconds
-    const timer = setTimeout(() => {
-      setShowAd(true);
-    }, 5000);
-
-    // Clear the timer when the component unmounts or if advertisement is closed
-    return () => clearTimeout(timer);
-  }, []);
-
-  const closeAdvertisement = () => {
-    setShowAd(false);
-  };
-
-
+  const openNotificationSettings = () => {
+    if (Notification.permission === 'default') {
+      Notification.requestPermission().then(permission => {
+        console.log('Notification permission:', permission);
+      });
+    } else if (Notification.permission === 'denied') {
+      // Notify the user that notifications are blocked
+      alert('Notifications are blocked. Please enable them in your browser settings.');
+    } else {
+      // Notify the user that notifications are already allowed
+      alert('Notifications are already allowed.');
+    }
+  }; 
+  // const toggleNotificationPermission = () => {
+  //   if (Notification.permission === 'granted') {
+  //     Notification.permission = 'denied';
+  //     setNotificationPermission('denied');
+  //   } else {
+  //     Notification.requestPermission().then(permission => {
+  //       setNotificationPermission(permission);
+  //     });
+  //   }
+  // };
   return (
     <div className="App">
-      <div className="search">
-        <input
-          value={location}
-          onChange={(event) => setLocation(event.target.value)}
-          onKeyPress={searchLocation}
-          placeholder="Enter location"
-          type="text"
-        />
+      <div className='dashboard'>
+      <img src="./pocket-weather-app-high-resolution-logo-white-transparent.png" alt="App Logo" style={{ width: 'auto', height: '5em' }}  />
+        <div className="settings">
+          <img src="./settings.png" alt="Settings" onClick={openNotificationSettings} />
+        </div>
       </div>
+      <div className="search">
+      <div className="search-bar">
+  <img src="./search.png" alt="Search Icon" className="search-icon" />
+  <input
+    value={location}
+    onChange={(event) => setLocation(event.target.value)}
+    onKeyPress={searchLocation}
+    placeholder="Enter location"
+    type="text"
+  />
+</div>
+  </div>
+
+
+      <div className="container">
       <div className="container">
         <div className="top">
           <div className="temp">
@@ -120,7 +118,7 @@ function App() {
         </div>
         <div className="bottom">
           <div className="feels">
-            <p>Feels like</p>
+            <p>temperature</p>
             <p className="bold">{Math.round(data.main?.feels_like - 271)} °C</p>
           </div>
           <div className="humid">
@@ -133,25 +131,27 @@ function App() {
           </div>
         </div>
       </div>
-      <div class="modal-overlay">
-      <div class="modal-content">
-        <div>
-        <button onClick={openModal}>Show Advertisement</button>
+      {/* <div className="modal-overlay">
+        <div className="modal-content">
+          <div>
+            <button onClick={openModal}>Show Advertisement</button>
+          </div>
+          <Modal 
+            isOpen={showModal}
+            onRequestClose={closeModal}
+            contentLabel="Advertisement Modal"
+          >
+            <h2>Advertisements</h2>
+            <p>Content of your advertisement goes here.</p>
+            <button onClick={closeModal}>Close</button>
+          </Modal>
         </div>
-      
-     <Modal 
-        isOpen={showModal}
-        onRequestClose={closeModal}
-        contentLabel="Advertisement Modal"
-      >
-        <h2>Advertisements</h2>
-        <p>Content of your advertisement goes here.</p>
-        <button onClick={closeModal}>Close</button>
-      </Modal> 
-  </div>
-</div>
-</div>
-);
+      </div> */}
+
+    
+      </div>
+    </div>
+  );
 }
 
 export default App;
