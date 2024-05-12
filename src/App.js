@@ -84,7 +84,8 @@ function App() {
   return (
     <div className="App">
       <div className='dashboard'>
-      <img src="./pocket-weather-app-high-resolution-logo-white-transparent.png" alt="App Logo" style={{ width: 'auto', height: '5em' }}  />
+      <img src="./pocket-weather-app-high-resolution-logo-white-transparent (2).png" alt="App Logo" className="app-logo" />
+
         <div className="settings">
           <img src="./settings.png" alt="Settings" onClick={openNotificationSettings} />
         </div>

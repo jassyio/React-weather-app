@@ -137,7 +137,7 @@ transform: rotate(270deg);
   color: #df1818; /* Set text color */
 }
 .settings{
-margin-left: 50px;
+margin-left: 35px;
 background: transparent; 
 }
 .search {
@@ -153,7 +153,7 @@ background: transparent;
  
 }
 .search-bar input {
-  padding-left: 0px; /* Adjust left padding to accommodate the icon */
+  padding-left: 45px; /* Adjust left padding to accommodate the icon */
 }
 
 
@@ -173,7 +173,7 @@ background: transparent;
   filter: brightness(2) invert(1); 
   position: relative; /* Set position to absolute */
   top: 1.3rem; /* Align vertically */
-  left: 3rem; /* Adjust left position as needed */
+  left: 2.5rem; /* Adjust left position as needed */
   transform: translateY(-50%); 
   
 }
@@ -183,4 +183,9 @@ background: transparent;
   justify-content: space-between;
   margin-top: 10px;
 
+}
+.app-logo {
+  width: auto;
+  height: 5em;
+  filter: brightness(1);
 }
