@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import Axios from 'axios';
 import Modal from 'react-modal';
+import Input from "./input";
 
 Modal.setAppElement('#root'); // Set the root element for accessibility
 
@@ -81,6 +82,7 @@ function App() {
   //     });
   //   }
   // };
+  
   return (
     <div className="App">
       <div className='dashboard'>
@@ -93,13 +95,11 @@ function App() {
       <div className="search">
       <div className="search-bar">
   <img src="./search.png" alt="Search Icon" className="search-icon" />
-  <input
-    value={location}
-    onChange={(event) => setLocation(event.target.value)}
-    onKeyPress={searchLocation}
-    placeholder="Enter location"
-    type="text"
-  />
+  <Input
+            value={location}
+            onChange={(event) => setLocation(event.target.value)}
+            onKeyPress={searchLocation}
+          />
 </div>
   </div>
 
