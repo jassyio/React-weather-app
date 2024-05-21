@@ -103,6 +103,22 @@ function App() {
     setSelectedDay(day);
   };
 
+  // Function to render weather icon based on weather condition
+  const renderWeatherIcon = (weather) => {
+    switch (weather) {
+      case 'Clear':
+        return <i className="wi wi-day-sunny"></i>;
+      case 'Clouds':
+        return <i className="wi wi-day-cloudy"></i>;
+      case 'Rain':
+        return <i className="wi wi-rain"></i>;
+      case 'Drizzle':
+        return <i className="wi wi-day-showers"></i>;
+      default:
+        return <i className="wi wi-day-sunny"></i>;
+    }
+  };
+
   return (
     <div className="App">
       <div className='dashboard'>
@@ -129,21 +145,29 @@ function App() {
           <div className="temp">
             <h1>{Math.round((selectedDay ? selectedDay.main.temp : data.main?.temp) - 273.15)} °C</h1>
           </div>
-          <div className="description">
-            <p>{selectedDay ? selectedDay.weather[0].description : data.weather?.[0]?.description}</p>
-          </div>
+          <div className="description-container">
+  <p className="description">
+    {selectedDay ? selectedDay.weather[0].description : data.weather?.[0]?.description}
+  </p>
+  {/* Weather icon */}
+  <div className="weather-icon">
+    {selectedDay ? renderWeatherIcon(selectedDay.weather[0].main) : renderWeatherIcon(data.weather?.[0]?.main)}
+  </div>
+</div>
         </div>
         <div className="bottom">
           <div className="feels">
-            <p>Feels Like</p>
+            <p>temperature</p>
             <p className="bold">{Math.round((selectedDay ? selectedDay.main.feels_like : data.main?.feels_like) - 273.15)} °C</p>
           </div>
+          
+
           <div className="humid">
             <p>Humidity</p>
             <p className="bold">{selectedDay ? selectedDay.main.humidity : data.main?.humidity} %</p>
           </div>
           <div className="wind">
-            <p>Wind Speed</p>
+            <p>Wind </p>
             <p className="bold">{Math.round((selectedDay ? selectedDay.wind.speed : data.wind?.speed) * 3.6)} Km/h</p>
           </div>
         </div>

@@ -2,27 +2,36 @@ import React, { useState, useEffect } from 'react';
 
 function Input({ value, onChange, onKeyPress }) {
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
-  const placeholderText = ' Enter location ...';
-  const typingSpeed = 300; // Adjust the typing speed (milliseconds per letter)
+  const [isTyping, setIsTyping] = useState(true);
+  const placeholderText = '    Enter location ...';
+  const typingSpeed = 200; // Adjust the typing speed (milliseconds per letter)
+  const erasingSpeed = 100; // Adjust the erasing speed (milliseconds per letter)
   const displayDuration = 3000; // Display duration after all letters are typed
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentLetterIndex((prevIndex) => {
-        if (prevIndex < placeholderText.length - 1) {
-          return prevIndex + 1; // Move to the next letter
+    const typeOrErase = () => {
+      if (isTyping) {
+        if (currentLetterIndex < placeholderText.length) {
+          setCurrentLetterIndex(currentLetterIndex + 1);
         } else {
+          setIsTyping(false);
           setTimeout(() => {
-            setCurrentLetterIndex(0); // Start over after display duration
+            setIsTyping(false);
           }, displayDuration);
-          return prevIndex; // Keep the index at the end
         }
-      });
-    }, typingSpeed);
+      } else {
+        if (currentLetterIndex > 0) {
+          setCurrentLetterIndex(currentLetterIndex - 1);
+        } else {
+          setIsTyping(true);
+        }
+      }
+    };
 
-    // Clean up
-    return () => clearInterval(timer);
-  }, []); // No dependencies, so it runs once when the component mounts
+    const timer = setTimeout(typeOrErase, isTyping ? typingSpeed : erasingSpeed);
+
+    return () => clearTimeout(timer);
+  }, [currentLetterIndex, isTyping, typingSpeed, erasingSpeed, displayDuration, placeholderText]);
 
   const animatedPlaceholder = placeholderText.slice(0, currentLetterIndex);
 
