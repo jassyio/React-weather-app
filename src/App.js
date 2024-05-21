@@ -11,6 +11,7 @@ function App() {
   const [data, setData] = useState({});
   const [weeklyData, setWeeklyData] = useState([]);
   const [selectedDay, setSelectedDay] = useState(null);
+  const [locationName, setLocationName] = useState('');
   const defaultLocation = 'Nairobi';
   const apiKey = 'e433fde7be9e5bd4105836a6101b6f90';
 
@@ -24,6 +25,7 @@ function App() {
     Axios.get(url)
       .then((response) => {
         setData(response.data);
+        setLocationName(response.data.name);
         console.log(response.data);
       })
       .catch((error) => {
@@ -45,6 +47,7 @@ function App() {
         const sortedDailyData = Object.values(dailyData).slice(0, 7); // Ensure only 7 days are selected
         setWeeklyData(sortedDailyData);
         setSelectedDay(sortedDailyData[0]); // Set the first day's data as default
+        setLocationName(response.data.city.name); // Set the location name
         console.log(dailyData);
       })
       .catch((error) => {
@@ -120,11 +123,11 @@ function App() {
       </div>
       <div className="container">
         <div className="top">
+          <div className="location-name">
+            <h2>{locationName}</h2>
+          </div>
           <div className="temp">
             <h1>{Math.round((selectedDay ? selectedDay.main.temp : data.main?.temp) - 273.15)} °C</h1>
-          </div>
-          <div className="location">
-            <p>{selectedDay ? selectedDay.name : data.name}</p>
           </div>
           <div className="description">
             <p>{selectedDay ? selectedDay.weather[0].description : data.weather?.[0]?.description}</p>
