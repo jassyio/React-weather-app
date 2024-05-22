@@ -292,6 +292,7 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 10px;
   }
 
   .search {
@@ -299,6 +300,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: 10px;
   }
 
   .container {
@@ -316,5 +318,6 @@ h1 {
     justify-content: space-around;
     align-items: center;
     width: 100%;
+    padding-top: 10px;
   }
 }
