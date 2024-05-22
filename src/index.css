@@ -276,7 +276,7 @@ h1 {
 
 @media (max-width: 600px) {
   .search-bar input {
-    padding-left: 40px; /* Reduce padding for smaller screens */
+    padding-left: 55px; /* Reduce padding for smaller screens */
   }
   .voice-search {
     margin-left: 1px; /* Adjust margin for smaller screens */
