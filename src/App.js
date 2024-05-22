@@ -4,7 +4,10 @@ import Axios from 'axios';
 import Modal from 'react-modal';
 import Input from "./input";
 
-Modal.setAppElement('#root'); // Set the root element for accessibility
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = new SpeechRecognition();
+
+Modal.setAppElement('#root');
 
 function App() {
   const [location, setLocation] = useState('');
@@ -14,6 +17,46 @@ function App() {
   const [locationName, setLocationName] = useState('');
   const defaultLocation = 'Nairobi';
   const apiKey = 'e433fde7be9e5bd4105836a6101b6f90';
+
+  recognition.onstart = () => {
+    console.log('Voice recognition started');
+  };
+
+  recognition.onspeechend = () => {
+    recognition.stop();
+    console.log('Voice recognition stopped');
+  };
+
+  recognition.onresult = (event) => {
+    const current = event.resultIndex;
+    const transcript = event.results[current][0].transcript;
+    console.log('Transcript:', transcript);
+    setLocation(transcript);
+    fetchWeather(`https://api.openweathermap.org/data/2.5/weather?q=${transcript}&appid=${apiKey}`);
+    fetchWeeklyWeather(transcript);
+  };
+
+  const [isRecording, setIsRecording] = useState(false);
+  const startVoiceRecognition = () => {
+    const recognition = new window.webkitSpeechRecognition();
+    recognition.lang = 'en-US';
+  
+    recognition.onstart = () => {
+      setIsRecording(true);
+    };
+  
+    recognition.onend = () => {
+      setIsRecording(false);
+    };
+  
+    recognition.onresult = (event) => {
+      const location = event.results[0][0].transcript;
+      setLocation(location);
+      searchLocation({ key: 'Enter' });
+    };
+  
+    recognition.start();
+  };
 
   const fetchWeatherForDefaultLocation = useCallback(() => {
     const locationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${defaultLocation}&appid=${apiKey}`;
@@ -44,10 +87,10 @@ function App() {
             dailyData[date] = forecast;
           }
         });
-        const sortedDailyData = Object.values(dailyData).slice(0, 7); // Ensure only 7 days are selected
+        const sortedDailyData = Object.values(dailyData).slice(0, 7);
         setWeeklyData(sortedDailyData);
-        setSelectedDay(sortedDailyData[0]); // Set the first day's data as default
-        setLocationName(response.data.city.name); // Set the location name
+        setSelectedDay(sortedDailyData[0]);
+        setLocationName(response.data.city.name);
         console.log(dailyData);
       })
       .catch((error) => {
@@ -103,7 +146,6 @@ function App() {
     setSelectedDay(day);
   };
 
-  // Function to render weather icon based on weather condition
   const renderWeatherIcon = (weather) => {
     switch (weather) {
       case 'Clear':
@@ -135,6 +177,10 @@ function App() {
             onChange={(event) => setLocation(event.target.value)}
             onKeyPress={searchLocation}
           />
+          <div className="voice-search" onClick={startVoiceRecognition}>
+            <img src="./microphone.png" alt="Microphone Icon" className="microphone-icon" />
+            {isRecording && <div className="recording-indicator">Recording...</div>}
+          </div>
         </div>
       </div>
       <div className="container">
@@ -146,22 +192,19 @@ function App() {
             <h1>{Math.round((selectedDay ? selectedDay.main.temp : data.main?.temp) - 273.15)} °C</h1>
           </div>
           <div className="description-container">
-  <p className="description">
-    {selectedDay ? selectedDay.weather[0].description : data.weather?.[0]?.description}
-  </p>
-  {/* Weather icon */}
-  <div className="weather-icon">
-    {selectedDay ? renderWeatherIcon(selectedDay.weather[0].main) : renderWeatherIcon(data.weather?.[0]?.main)}
-  </div>
-</div>
+            <p className="description">
+              {selectedDay ? selectedDay.weather[0].description : data.weather?.[0]?.description}
+            </p>
+            <div className="weather-icon">
+              {selectedDay ? renderWeatherIcon(selectedDay.weather[0].main) : renderWeatherIcon(data.weather?.[0]?.main)}
+            </div>
+          </div>
         </div>
         <div className="bottom">
           <div className="feels">
             <p>temperature</p>
             <p className="bold">{Math.round((selectedDay ? selectedDay.main.feels_like : data.main?.feels_like) - 273.15)} °C</p>
           </div>
-          
-
           <div className="humid">
             <p>Humidity</p>
             <p className="bold">{selectedDay ? selectedDay.main.humidity : data.main?.humidity} %</p>

@@ -16,13 +16,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-
 p {
   font-size: 1.5rem;
 }
 
 h1 {
-  font-size: 4rem; /* Adjusted to fit better */
+  font-size: 4rem;
 }
 
 .App {
@@ -78,13 +77,8 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px; /* Added margin for spacing */
+  margin-bottom: 20px;
 }
-
-/* .description {
-  text-align: center;
-  padding: 1rem;
-} */
 
 .App .bottom {
   display: flex;
@@ -94,7 +88,7 @@ h1 {
   padding: 0.9rem;
   border-radius: 12px;
   background-color: rgba(128, 124, 124, 0.493);
-  margin-bottom: 20px; /* Adjusted margin to fit weekly forecast */
+  margin-bottom: 20px;
 }
 
 .bold {
@@ -137,16 +131,18 @@ h1 {
   display: flex;
   align-items: center;
   margin-top: 10px;
-  position: relative; /* To position the search icon */
+  position: relative;
 }
 
 .search-bar {
-  flex: 1;
+  display: flex;
+  align-items: center;
   position: relative;
 }
 
 .search-bar input {
   padding-left: 55px; /* Make space for the icon */
+  flex: 1; /* Take up the remaining space */
 }
 
 .settings img {
@@ -163,8 +159,8 @@ h1 {
   left: 20px;
   padding-bottom: 0px;
   padding-top: 6px;
-  color: #ffffff; /* Bright white color */
-  filter: brightness(10) invert(1); /* Ensure the icon is bright white */
+  color: #ffffff;
+  filter: brightness(10) invert(1);
 }
 
 .dashboard {
@@ -221,22 +217,64 @@ h1 {
   font-weight: 400;
   color: #ffffff;
 }
-/* CSS to add */
 
 .description-container {
   display: flex;
   align-items: center;
-  
 }
 
 .description {
-  flex: 1; /* Take up remaining space */
+  flex: 1;
   text-align: center;
   justify-content: space-evenly;
 }
 
 .weather-icon {
-  margin-left: 30px; /* Adjust the spacing between description and weather icon */
+  margin-left: 30px;
   width: 50px;
   height: 35px;
+}
+
+.microphone-icon {
+  width: 30px;
+  height: 30px;
+  filter: brightness(0) invert(1);
+  padding-top: 10px;
+}
+
+.voice-search {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.recording-indicator {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: red;
+  color: white;
+  border-radius: 5px;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 600px) {
+  .search-bar input {
+    padding-left: 40px; /* Reduce padding for smaller screens */
+  }
+  .voice-search {
+    margin-left: 1px; /* Adjust margin for smaller screens */
+  }
 }
