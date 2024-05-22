@@ -142,7 +142,7 @@ h1 {
 
 .search-bar input {
   flex-grow: 1;
-  padding-left: 45px; /* Ensure space for the search icon */
+  padding-left: 55px; /* Ensure space for the search icon */
 }
 
 
@@ -168,7 +168,7 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 5px;
+  margin-top: 1px;
   width: 100%;
 }
 
@@ -236,6 +236,7 @@ h1 {
   height: 35px;
 }
 
+
 .microphone-icon {
   width: 30px;
   height: 30px;
@@ -249,15 +250,17 @@ h1 {
   display: flex;
   align-items: center;
 }
-
-.recording-indicator {
-  margin-left: 10px;
-  padding: 5px 10px;
+.red-dot {
+  width: 10px;
+  height: 10px;
   background-color: red;
-  color: white;
-  border-radius: 5px;
-  animation: pulse 1s infinite;
+  border-radius: 50%;
+  position: absolute;
+  top: -5px;
+  right: -5px;
 }
+
+
 
 @keyframes pulse {
   0% {

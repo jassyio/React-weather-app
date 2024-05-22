@@ -4,10 +4,7 @@ import Axios from 'axios';
 import Modal from 'react-modal';
 import Input from "./input";
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = new SpeechRecognition();
-
-Modal.setAppElement('#root');
+Modal.setAppElement('#root'); // Set the root element for accessibility
 
 function App() {
   const [location, setLocation] = useState('');
@@ -15,46 +12,34 @@ function App() {
   const [weeklyData, setWeeklyData] = useState([]);
   const [selectedDay, setSelectedDay] = useState(null);
   const [locationName, setLocationName] = useState('');
+  const [isListening, setIsListening] = useState(false); // State to track voice listening
   const defaultLocation = 'Nairobi';
   const apiKey = 'e433fde7be9e5bd4105836a6101b6f90';
 
-  recognition.onstart = () => {
-    console.log('Voice recognition started');
-  };
+  // Function to handle voice search
+  const handleVoiceSearch = () => {
+    const recognition = new window.webkitSpeechRecognition(); // For Chrome
 
-  recognition.onspeechend = () => {
-    recognition.stop();
-    console.log('Voice recognition stopped');
-  };
-
-  recognition.onresult = (event) => {
-    const current = event.resultIndex;
-    const transcript = event.results[current][0].transcript;
-    console.log('Transcript:', transcript);
-    setLocation(transcript);
-    fetchWeather(`https://api.openweathermap.org/data/2.5/weather?q=${transcript}&appid=${apiKey}`);
-    fetchWeeklyWeather(transcript);
-  };
-
-  const [isRecording, setIsRecording] = useState(false);
-  const startVoiceRecognition = () => {
-    const recognition = new window.webkitSpeechRecognition();
     recognition.lang = 'en-US';
-  
-    recognition.onstart = () => {
-      setIsRecording(true);
+
+    recognition.onstart = function() {
+      setIsListening(true);
     };
-  
-    recognition.onend = () => {
-      setIsRecording(false);
+
+    recognition.onresult = function(event) {
+      const spokenText = event.results[0][0].transcript;
+      setLocation(spokenText);
     };
-  
-    recognition.onresult = (event) => {
-      const location = event.results[0][0].transcript;
-      setLocation(location);
-      searchLocation({ key: 'Enter' });
+
+    recognition.onerror = function(event) {
+      console.error('Speech recognition error:', event.error);
+      alert('Speech recognition error. Please try again.');
     };
-  
+
+    recognition.onend = function() {
+      setIsListening(false);
+    };
+
     recognition.start();
   };
 
@@ -87,10 +72,10 @@ function App() {
             dailyData[date] = forecast;
           }
         });
-        const sortedDailyData = Object.values(dailyData).slice(0, 7);
+        const sortedDailyData = Object.values(dailyData).slice(0, 7); // Ensure only 7 days are selected
         setWeeklyData(sortedDailyData);
-        setSelectedDay(sortedDailyData[0]);
-        setLocationName(response.data.city.name);
+        setSelectedDay(sortedDailyData[0]); // Set the first day's data as default
+        setLocationName(response.data.city.name); // Set the location name
         console.log(dailyData);
       })
       .catch((error) => {
@@ -103,9 +88,10 @@ function App() {
       const locationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`;
       fetchWeather(locationUrl);
       fetchWeeklyWeather(location);
-      setLocation('');
+      setLocation(''); // Reset the location input after fetching weather data
     }
   };
+  
 
   useEffect(() => {
     const getCurrentLocationWeather = () => {
@@ -146,6 +132,7 @@ function App() {
     setSelectedDay(day);
   };
 
+  // Function to render weather icon based on weather condition
   const renderWeatherIcon = (weather) => {
     switch (weather) {
       case 'Clear':
@@ -161,73 +148,77 @@ function App() {
     }
   };
 
-return (
-  <div className="App">
-    <div className='dashboard'>
-      <img src="./pocket-weather-app-high-resolution-logo-white-transparent (2).png" alt="App Logo" className="app-logo" />
-      <div className="settings">
-        <img src="./settings.png" alt="Settings" onClick={openNotificationSettings} />
-      </div>
-    </div>
-    <div className="search">
-      <div className="search-bar">
-        <img src="./search.png" alt="Search Icon" className="search-icon" />
-        <Input
-          value={location}
-          onChange={(event) => setLocation(event.target.value)}
-          onKeyPress={searchLocation}
-        />
-        <div className="voice-search" onClick={startVoiceRecognition}>
-          <img src="./microphone.png" alt="Microphone Icon" className="microphone-icon" />
-          {isRecording && <div className="recording-indicator">Recording...</div>}
+  return (
+    <div className="App">
+      <div className='dashboard'>
+        <img src="./pocket-weather-app-high-resolution-logo-white-transparent (2).png" alt="App Logo" className="app-logo" />
+        <div className="settings">
+          <img
+            src="./settings.png" alt="Settings" onClick={openNotificationSettings} />
         </div>
       </div>
-    </div>
-    <div className="container">
-      <div className="top">
-        <div className="location-name">
-          <h2>{locationName}</h2>
-        </div>
-        <div className="temp">
-          <h1>{Math.round((selectedDay ? selectedDay.main.temp : data.main?.temp) - 273.15)} °C</h1>
-        </div>
-        <div className="description-container">
-          <p className="description">
-            {selectedDay ? selectedDay.weather[0].description : data.weather?.[0]?.description}
-          </p>
-          <div className="weather-icon">
-            {selectedDay ? renderWeatherIcon(selectedDay.weather[0].main) : renderWeatherIcon(data.weather?.[0]?.main)}
+      <div className="search">
+        <div className="search-bar">
+          <img src="./search.png" alt="Search Icon" className="search-icon" />
+          <Input
+            value={location}
+            onChange={(event) => setLocation(event.target.value)}
+            onKeyPress={searchLocation}
+          />
+          <div className="voice-search-btn" onClick={handleVoiceSearch}>
+            <img src="./microphone.png" alt="Microphone Icon" className="microphone-icon" />
+            {isListening && <div className="red-dot"></div>}
           </div>
         </div>
       </div>
-      <div className="bottom">
-        <div className="feels">
-          <p>temperature</p>
-          <p className="bold">{Math.round((selectedDay ? selectedDay.main.feels_like : data.main?.feels_like) - 273.15)} °C</p>
+        <div className="container">
+          <div className="top">
+            <div className="location-name">
+              <h2>{locationName}</h2>
+            </div>
+            <div className="temp">
+              <h1>{Math.round((selectedDay ? selectedDay.main.temp : data.main?.temp) - 273.15)} °C</h1>
+            </div>
+            <div className="description-container">
+              <p className="description">
+                {selectedDay ? selectedDay.weather[0].description : data.weather?.[0]?.description}
+              </p>
+              <div className="weather-icon">
+                {selectedDay ? renderWeatherIcon(selectedDay.weather[0].main) : renderWeatherIcon(data.weather?.[0]?.main)}
+              </div>
+            </div>
+          </div>
+          <div className="bottom">
+            <div className="feels">
+              <p>temperature</p>
+              <p className="bold">{Math.round((selectedDay ? selectedDay.main.feels_like : data.main?.feels_like) - 273.15)} °C</p>
+            </div>
+            <div className="humid">
+              <p>Humidity</p>
+              <p className="bold">{selectedDay ? selectedDay.main.humidity : data.main?.humidity} %</p>
+            </div>
+            <div className="wind">
+              <p>Wind </p>
+             
+
+              <p className="bold">{Math.round((selectedDay ? selectedDay.wind.speed : data.wind?.speed) * 3.6)} Km/h</p>
+            </div>
+          </div>
         </div>
-        <div className="humid">
-          <p>Humidity</p>
-          <p className="bold">{selectedDay ? selectedDay.main.humidity : data.main?.humidity} %</p>
-        </div>
-        <div className="wind">
-          <p>Wind </p>
-          <p className="bold">{Math.round((selectedDay ? selectedDay.wind.speed : data.wind?.speed) * 3.6)} Km/h</p>
+        <div className="weekly-forecast">
+          {weeklyData.length > 0 ? weeklyData.map((day, index) => (
+            <div
+              key={index}
+              className={`day ${selectedDay === day ? 'selected' : ''}`}
+              onClick={() => handleDayClick(day)}
+            >
+              {new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}
+            </div>
+          )) : <p>Loading...</p>}
         </div>
       </div>
-    </div>
-    <div className="weekly-forecast">
-      {weeklyData.length > 0 ? weeklyData.map((day, index) => (
-        <div
-          key={index}
-          className={`day ${selectedDay === day ? 'selected' : ''}`}
-          onClick={() => handleDayClick(day)}
-        >
-          {new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}
-        </div>
-      )) : <p>Loading...</p>}
-    </div>
-  </div>
-);
-}
-
-export default App;
+    );
+  }
+  
+  export default App;
+  
