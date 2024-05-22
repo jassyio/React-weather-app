@@ -19,29 +19,34 @@ function App() {
   // Function to handle voice search
   const handleVoiceSearch = () => {
     const recognition = new window.webkitSpeechRecognition(); // For Chrome
-
+  
     recognition.lang = 'en-US';
-
+  
     recognition.onstart = function() {
       setIsListening(true);
     };
-
+  
     recognition.onresult = function(event) {
       const spokenText = event.results[0][0].transcript;
       setLocation(spokenText);
+      // Fetch weather data after setting the location
+      const locationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${spokenText}&appid=${apiKey}`;
+      fetchWeather(locationUrl);
+      fetchWeeklyWeather(spokenText);
     };
-
+  
     recognition.onerror = function(event) {
       console.error('Speech recognition error:', event.error);
       alert('Speech recognition error. Please try again.');
     };
-
+  
     recognition.onend = function() {
       setIsListening(false);
     };
-
+  
     recognition.start();
   };
+  
 
   const fetchWeatherForDefaultLocation = useCallback(() => {
     const locationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${defaultLocation}&appid=${apiKey}`;
