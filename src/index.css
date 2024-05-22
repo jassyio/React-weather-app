@@ -276,12 +276,15 @@ h1 {
 
 @media (max-width: 600px) {
   .search-bar input {
-    padding-left: 55px; /* Reduce padding for smaller screens */
+    padding-left: 45px; /* Reduce padding for smaller screens */
+    width: calc(100% - 90px); /* Adjust the width of the input */
   }
+}
+
   .voice-search {
     margin-left: 1px; /* Adjust margin for smaller screens */
   }
-}
+
 @media (max-width: 600px) {
   .App {
     display: flex;
