@@ -141,9 +141,10 @@ h1 {
 }
 
 .search-bar input {
-  padding-left: 55px; /* Make space for the icon */
-  flex: 1; /* Take up the remaining space */
+  flex-grow: 1;
+  padding-left: 45px; /* Ensure space for the search icon */
 }
+
 
 .settings img {
   cursor: pointer;

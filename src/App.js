@@ -170,18 +170,19 @@ function App() {
         </div>
       </div>
       <div className="search">
-        <div className="search-bar">
-          <img src="./search.png" alt="Search Icon" className="search-icon" />
-          <Input
-            value={location}
-            onChange={(event) => setLocation(event.target.value)}
-            onKeyPress={searchLocation}
-          />
-          <div className="voice-search" onClick={startVoiceRecognition}>
-            <img src="./microphone.png" alt="Microphone Icon" className="microphone-icon" />
-            {isRecording && <div className="recording-indicator">Recording...</div>}
-          </div>
-        </div>
+      <div className="search-bar">
+  <img src="./search.png" alt="Search Icon" className="search-icon" />
+  <Input
+    value={location}
+    onChange={(event) => setLocation(event.target.value)}
+    onKeyPress={searchLocation}
+  />
+  <div className="voice-search" onClick={startVoiceRecognition}>
+    <img src="./microphone.png" alt="Microphone Icon" className="microphone-icon" />
+    {isRecording && <div className="recording-indicator">Recording...</div>}
+  </div>
+</div>
+
       </div>
       <div className="container">
         <div className="top">
