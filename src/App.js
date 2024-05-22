@@ -48,12 +48,14 @@ function App() {
     recognition.start();
   };
 
+  // Function to fetch weather for the default location
   const fetchWeatherForDefaultLocation = useCallback(() => {
     const locationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${defaultLocation}&appid=${apiKey}`;
     fetchWeather(locationUrl);
     fetchWeeklyWeather(defaultLocation);
   }, [defaultLocation, apiKey]);
 
+  // Function to fetch weather data from API
   const fetchWeather = (url) => {
     setIsLoading(true);
     Axios.get(url)
@@ -61,6 +63,7 @@ function App() {
         setData(response.data);
         setLocationName(response.data.name);
         setIsLoading(false);
+        setLocation(''); // Clear the location input after fetching weather data
         console.log(response.data);
       })
       .catch((error) => {
@@ -68,7 +71,9 @@ function App() {
         setIsLoading(false);
       });
   };
+  
 
+  // Function to fetch weekly weather data from API
   const fetchWeeklyWeather = (location) => {
     setIsLoading(true);
     const weeklyUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${apiKey}`;
@@ -99,6 +104,7 @@ function App() {
       });
   };
 
+  // Function to handle location search
   const searchLocation = (event) => {
     if (event.key === 'Enter') {
       const locationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`;
@@ -108,6 +114,7 @@ function App() {
     }
   };
 
+  // Function to handle fetching current location weather
   useEffect(() => {
     const getCurrentLocationWeather = () => {
       if (navigator.geolocation) {
@@ -131,6 +138,7 @@ function App() {
     getCurrentLocationWeather();
   }, [fetchWeatherForDefaultLocation]);
 
+  // Function to handle notification settings
   const openNotificationSettings = () => {
     if (Notification.permission === 'default') {
       Notification.requestPermission().then(permission => {
@@ -143,6 +151,7 @@ function App() {
     }
   };
 
+  // Function to handle day click for weekly forecast
   const handleDayClick = (day) => {
     setSelectedDay(day);
   };
@@ -162,6 +171,33 @@ function App() {
         return <i className="wi wi-day-sunny"></i>;
     }
   };
+
+  // Function to handle automatic search with device location name
+  useEffect(() => {
+    if (navigator.permissions) {
+      navigator.permissions.query({name: 'geolocation'}).then((permission) => {
+        if (permission.state === 'granted') {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const { latitude, longitude } = position.coords;
+              Axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`)
+                .then((response) => {
+                  setLocation(response.data.name); // Set the location to city name
+                  fetchWeather(`https://api.openweathermap.org/data/2.5/weather?q=${response.data.name}&appid=${apiKey}`);
+                  fetchWeeklyWeather(response.data.name);
+                })
+                .catch((error) => {
+                  console.error('Error fetching weather data:', error);
+                });
+            },
+            (error) => {
+              console.error('Geolocation error:', error);
+            }
+          );
+        }
+      });
+    }
+  }, []);
 
   return (
     <div className="App">
