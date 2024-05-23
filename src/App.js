@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import Axios from 'axios';
-import Modal from 'react-modal';
 import Input from "./input";
-
-Modal.setAppElement('#root'); // Set the root element for accessibility
+import './i18n'; // Import i18n configuration
+import { useTranslation } from 'react-i18next';
 
 function App() {
+  const { t, i18n } = useTranslation();
   const [location, setLocation] = useState('');
   const [data, setData] = useState({});
   const [weeklyData, setWeeklyData] = useState([]);
@@ -16,17 +16,23 @@ function App() {
   const [isLoading, setIsLoading] = useState(true); // State to track loading
   const defaultLocation = 'Nairobi';
   const apiKey = 'e433fde7be9e5bd4105836a6101b6f90';
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
+  const handleLanguageChange = (lng) => {
+    i18n.changeLanguage(lng);
+    setDropdownVisible(false);
+  };
 
   // Function to handle voice search
   const handleVoiceSearch = () => {
     const recognition = new window.webkitSpeechRecognition(); // For Chrome
-  
+
     recognition.lang = 'en-US';
-  
+
     recognition.onstart = function() {
       setIsListening(true);
     };
-  
+
     recognition.onresult = function(event) {
       const spokenText = event.results[0][0].transcript;
       setLocation(spokenText);
@@ -35,16 +41,16 @@ function App() {
       fetchWeather(locationUrl);
       fetchWeeklyWeather(spokenText);
     };
-  
+
     recognition.onerror = function(event) {
       console.error('Speech recognition error:', event.error);
       alert('Speech recognition error. Please try again.');
     };
-  
+
     recognition.onend = function() {
       setIsListening(false);
     };
-  
+
     recognition.start();
   };
 
@@ -71,7 +77,6 @@ function App() {
         setIsLoading(false);
       });
   };
-  
 
   // Function to fetch weekly weather data from API
   const fetchWeeklyWeather = (location) => {
@@ -203,9 +208,16 @@ function App() {
     <div className="App">
       <div className='dashboard'>
         <img src="./pocket-weather-app-high-resolution-logo-white-transparent (2).png" alt="App Logo" className="app-logo" />
-        <div className="settings">
-          <img
-            src="./settings.png" alt="Settings" onClick={openNotificationSettings} />
+        <div className="settings" onClick={() => setDropdownVisible(!dropdownVisible)}>
+          <img src="./settings.png" alt="Settings" />
+          {dropdownVisible && (
+            <div className="dropdown">
+              <button onClick={() => handleLanguageChange('en')}>English</button>
+              <button onClick={() => handleLanguageChange('fr')}>French</button>
+              <button onClick={() => handleLanguageChange('es')}>Spanish</button>
+              <button onClick={() => handleLanguageChange('ru')}>Russian</button>
+            </div>
+          )}
         </div>
       </div>
       <div className="search">
@@ -215,6 +227,7 @@ function App() {
             value={location}
             onChange={(event) => setLocation(event.target.value)}
             onKeyPress={searchLocation}
+            placeholder={t('    Enter location')}
           />
           <div className="voice-search-btn" onClick={handleVoiceSearch}>
             <img src="./microphone.png" alt="Microphone Icon" className="microphone-icon" />
@@ -232,7 +245,7 @@ function App() {
           </div>
           <div className="description-container">
             <p className="description">
-              {selectedDay ? selectedDay.weather[0].description : data.weather?.[0]?.description}
+              {t(selectedDay ? selectedDay.weather[0].description : data.weather?.[0]?.description)}
             </p>
             <div className="weather-icon">
               {selectedDay ? renderWeatherIcon(selectedDay.weather[0].main) : renderWeatherIcon(data.weather?.[0]?.main)}
@@ -241,22 +254,22 @@ function App() {
         </div>
         <div className="bottom">
           <div className="feels">
-            <p>temperature</p>
+            <p>{t('Temperature')}</p>
             <p className="bold">{Math.round((selectedDay ? selectedDay.main.feels_like : data.main?.feels_like) - 273.15)} °C</p>
           </div>
           <div className="humid">
-            <p>Humidity</p>
+            <p>{t('Humidity')}</p>
             <p className="bold">{selectedDay ? selectedDay.main.humidity : data.main?.humidity} %</p>
           </div>
           <div className="wind">
-            <p>Wind</p>
+            <p>{t('Wind')}</p>
             <p className="bold">{Math.round((selectedDay ? selectedDay.wind.speed : data.wind?.speed) * 3.6)} Km/h</p>
           </div>
         </div>
       </div>
       <div className="weekly-forecast">
         {isLoading ? (
-          <p>Loading...</p>
+          <p>{t('Loading...')}</p>
         ) : (
           weeklyData.length > 0 && weeklyData.map((day, index) => (
             <div
@@ -264,7 +277,7 @@ function App() {
               className={`day ${selectedDay === day ? 'selected' : ''}`}
               onClick={() => handleDayClick(day)}
             >
-              {new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}
+              {new Date(day.dt * 1000).toLocaleDateString(i18n.language, { weekday: 'short' })}
             </div>
           ))
         )}
