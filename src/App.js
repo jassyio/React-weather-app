@@ -161,6 +161,17 @@ function App() {
     setSelectedDay(day);
   };
 
+  const getAbbreviatedDayName = (date, language) => {
+    const options = { weekday: 'short' };
+    if (language === 'sw') {
+      const dayNamesSwahili = ['Jum', 'Jtt', 'Jmn', 'Jtn', 'Alh', 'Ijm', 'Jms'];
+      const dayIndex = new Date(date).getDay();
+      return dayNamesSwahili[dayIndex];
+    }
+    return new Date(date).toLocaleDateString(language, options);
+  };
+  
+
   // Function to render weather icon based on weather condition
   const renderWeatherIcon = (weather) => {
     switch (weather) {
@@ -272,20 +283,27 @@ function App() {
         </div>
       </div>
       <div className="weekly-forecast">
-        {isLoading ? (
-          <p>{t('Loading...')}</p>
-        ) : (
-          weeklyData.length > 0 && weeklyData.map((day, index) => (
-            <div
-              key={index}
-              className={`day ${selectedDay === day ? 'selected' : ''}`}
-              onClick={() => handleDayClick(day)}
-            >
-              {new Date(day.dt * 1000).toLocaleDateString(i18n.language, { weekday: 'short' })}
-            </div>
-          ))
-        )}
+  {isLoading ? (
+    <p>{t('Loading...')}</p>
+  ) : (
+    weeklyData.length > 0 && weeklyData.map((day, index) => (
+      <div
+        key={index}
+        className={`day ${selectedDay === day ? 'selected' : ''}`}
+        onClick={() => handleDayClick(day)}
+      >
+        {getAbbreviatedDayName(day.dt * 1000, i18n.language)}
       </div>
+      
+    ))
+  )}
+</div>
+<footer className="footer">
+        <div className="container">
+          <h6>&copy; 2024 Pocket Weather App</h6>
+        </div>
+      </footer>
+
     </div>
   );
 }

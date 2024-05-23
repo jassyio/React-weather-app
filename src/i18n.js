@@ -48,7 +48,14 @@ const resources = {
       "rain": "mvua",
       "thunderstorm": "dhoruba ya radi",
       "snow": "the",
-      "mist": "mawingu kidogo"
+      "mist": "mawingu kidogo",
+      "Mon": "Jum",
+      "Tue": "Jmn",
+      "Wed": "Jmt",
+      "Thu": "Alh",
+      "Fri": "Iju",
+      "Sat": "Jms",
+      "Sun": "Jmp"
       // Add other translations
     }
   },

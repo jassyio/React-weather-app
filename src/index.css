@@ -306,7 +306,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 5px;
+    padding-top: 1px;
   }
 
   .container {
@@ -344,85 +344,7 @@ h1 {
   }
 }
 
-/* Add styles for the settings modal */
-.settings-modal {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 20px;
-  border-radius: 10px;
-}
 
-.settings-modal h2 {
-  margin-bottom: 20px;
-}
-
-.settings-modal label {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-}
-
-.settings-modal select {
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-}
-
-.settings-modal button {
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-}
-
-.settings-modal button:hover {
-  background-color: #0056b3;
-}
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 500px;
-  width: 90%;
-  text-align: center;
-}
-
-.modal-content h2 {
-  margin-bottom: 20px;
-}
-
-.modal-content button {
-  margin: 10px;
-  padding: 10px 20px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background-color: #007BFF;
-  color: white;
-  font-size: 16px;
-}
-
-.modal-content button:hover {
-  background-color: #0056b3;
-}
 /* Add to App.css */
 .dropdown {
   position: absolute;
@@ -448,4 +370,15 @@ h1 {
 .dropdown button:hover {
   background-color: #f0f0f0;
 }
+.footer {
+  
+ 
+  
+  
+  font-size: 22px; /* Small font size */
+  font-style: italic; /* Italics */
+  padding-top: 50px ; /* Add padding for spacing */
+ 
+}
+
 
