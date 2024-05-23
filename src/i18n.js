@@ -1,3 +1,4 @@
+
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
@@ -6,7 +7,7 @@ const resources = {
     translation: {
       "Weather": "Weather",
       "Search": "Search",
-      "Enter location": "Enter location",
+      "    Enter location": "Enter location",
       "Voice Search": "Voice Search",
       "Temperature": "Temperature",
       "Humidity": "Humidity",
@@ -26,11 +27,63 @@ const resources = {
       // Add other translations
     }
   },
+  sw: {
+    translation: {
+      "Weather": "Hali ya Hewa",
+      "Search": "Tafuta",
+      "    Enter location": "Ingiza eneo",
+      "moderate rain": "mvua nyepesi",
+      "Voice Search": "Tafuta kwa Sauti",
+      "Temperature": "Joto",
+      "Humidity": "Unyevu",
+      "Wind": "Upepo",
+      "Loading...": "Inapakia...",
+      "Feels like": "Inaonekana kama",
+      "clear sky": "angani wazi",
+      "few clouds": "mawingu machache",
+      "scattered clouds": "mawingu yaliyotapakaa",
+      "broken clouds": "mawingu yaliyovunjika",
+      "shower rain": "mvua ya dhoruba",
+      "light rain": "mvua nyepesi",
+      "rain": "mvua",
+      "thunderstorm": "dhoruba ya radi",
+      "snow": "the",
+      "mist": "mawingu kidogo"
+      // Add other translations
+    }
+  },
+  zh: {
+    translation: {
+      "Weather": "天气",
+      "Search": "搜索",
+      "    Enter location": "输入位置",
+      "moderate rain": "小雨",
+      "Voice Search": "语音搜索",
+      "Temperature": "温度",
+      "Humidity": "湿度",
+      "Wind": "风",
+      "Loading...": "加载中...",
+      "Feels like": "体感温度",
+      "clear sky": "晴朗",
+      "few clouds": "少云",
+      "scattered clouds": "多云",
+      "broken clouds": "阴天",
+      "shower rain": "阵雨",
+      "light rain": "小雨",
+      "rain": "雨",
+      "thunderstorm": "雷雨",
+      "snow": "雪",
+      "mist": "薄雾"
+      // Add other translations
+    }
+  },
+  
   fr: {
     translation: {
+      "moderate rain": "pluie légère",
       "Weather": "Météo",
       "Search": "Chercher",
-      "Enter location": "Entrer le lieu",
+      "    Enter location": "Entrer le lieu",
       "Voice Search": "Recherche vocale",
       "Temperature": "Température",
       "Humidity": "Humidité",
@@ -54,7 +107,8 @@ const resources = {
     translation: {
       "Weather": "Clima",
       "Search": "Buscar",
-      "Enter location": "Ingresar ubicación",
+      "    Enter location": "lluvia ligera",
+      "moderate rain": "pluie légère",
       "Voice Search": "Búsqueda por voz",
       "Temperature": "Temperatura",
       "Humidity": "Humedad",
@@ -78,7 +132,8 @@ const resources = {
     translation: {
       "Weather": "Погода",
       "Search": "Поиск",
-      "Enter location": "Введите местоположение",
+      "    Enter location": "Введите местоположение",
+      "moderate rain": "легкий дождь",
       "Voice Search": "Поиск по голосу",
       "Temperature": "Температура",
       "Humidity": "Влажность",

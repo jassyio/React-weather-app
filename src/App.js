@@ -216,6 +216,8 @@ function App() {
               <button onClick={() => handleLanguageChange('fr')}>French</button>
               <button onClick={() => handleLanguageChange('es')}>Spanish</button>
               <button onClick={() => handleLanguageChange('ru')}>Russian</button>
+              <button onClick={() => handleLanguageChange('zh')}>Chinese</button>
+              <button onClick={() => handleLanguageChange('sw')}>Swahili</button>
             </div>
           )}
         </div>
@@ -224,11 +226,12 @@ function App() {
         <div className="search-bar">
           <img src="./search.png" alt="Search Icon" className="search-icon" />
           <Input
-            value={location}
-            onChange={(event) => setLocation(event.target.value)}
-            onKeyPress={searchLocation}
-            placeholder={t('    Enter location')}
-          />
+  value={location}
+  onChange={(event) => setLocation(event.target.value)}
+  onKeyPress={searchLocation}
+  placeholder={t('    Enter location')} // Ensure this key is present in all translation files
+/>
+
           <div className="voice-search-btn" onClick={handleVoiceSearch}>
             <img src="./microphone.png" alt="Microphone Icon" className="microphone-icon" />
             {isListening && <div className="red-dot"></div>}
@@ -244,13 +247,14 @@ function App() {
             <h1>{Math.round((selectedDay ? selectedDay.main.temp : data.main?.temp) - 273.15)} °C</h1>
           </div>
           <div className="description-container">
-            <p className="description">
-              {t(selectedDay ? selectedDay.weather[0].description : data.weather?.[0]?.description)}
-            </p>
-            <div className="weather-icon">
-              {selectedDay ? renderWeatherIcon(selectedDay.weather[0].main) : renderWeatherIcon(data.weather?.[0]?.main)}
-            </div>
-          </div>
+  <p className="description">
+    {t(selectedDay ? selectedDay.weather[0].description : data.weather?.[0]?.description)}
+  </p>
+  <div className="weather-icon">
+    {selectedDay ? renderWeatherIcon(selectedDay.weather[0].main) : renderWeatherIcon(data.weather?.[0]?.main)}
+  </div>
+</div>
+
         </div>
         <div className="bottom">
           <div className="feels">

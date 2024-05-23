@@ -9,19 +9,22 @@ function Settings({ onClose, changeLanguage }) {
     setSelectedLanguage(language);
     changeLanguage(language);
   };
-
+  
   return (
     <div className="settings-modal">
       <h2>Settings</h2>
       <label>
         Select Language:
         <select value={selectedLanguage} onChange={handleLanguageChange}>
-          <option value="en">English</option>
-          <option value="es">Spanish</option>
-          <option value="fr">French</option>
-          <option value="de">German</option>
-          {/* Add more languages as needed */}
-        </select>
+  <option value="en">English</option>
+  <option value="es">Spanish</option>
+  <option value="fr">French</option>
+  <option value="de">German</option>
+  <option value="sw">Swahili</option>
+  <option value="zh">Chinese</option>
+  {/* Add more languages as needed */}
+</select>
+
       </label>
       <button onClick={onClose}>Close</button>
     </div>
